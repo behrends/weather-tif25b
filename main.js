@@ -1,14 +1,14 @@
-import { question, keyInSelect } from "readline-sync";
+import { question, keyInSelect } from 'readline-sync';
 
 let input;
 
-while(input !== 'ende') {
+while (input !== 'ende') {
   const options = ['Ort eingeben'];
   input = keyInSelect(options, 'Auswahl');
-  if(input === 0 ) {
-    weatherApp();     
+  if (input === 0) {
+    weatherApp();
   } else if (input === -1) {
-    console.log("Auf Wiedersehen! ")
+    console.log('Auf Wiedersehen! ');
     input = 'ende';
   }
 }
@@ -16,16 +16,16 @@ while(input !== 'ende') {
 function weatherApp() {
   // Funktionsdeklarationen
   function greeting() {
-    console.log("Willkommen zur Wetter-App");
+    console.log('Willkommen zur Wetter-App');
   }
 
-  function input() { 
+  function input() {
     // Funktionsrumpf
-    const city = question("Für welche Stadt willst du das Wetter wissen? ");
+    const city = question('Für welche Stadt willst du das Wetter wissen? ');
     // city ist eine lokale Konstante in der Funktion
 
     // leere Eingabe verhindern
-    if(city.trim().length === 0) {
+    if (city.trim().length === 0) {
       return;
     }
 
@@ -38,7 +38,7 @@ function weatherApp() {
     const formattedNow = now.toLocaleTimeString('de-DE', {
       hour: '2-digit',
       minute: '2-digit',
-      second: '2-digit'
+      second: '2-digit',
     });
     return formattedNow;
   }
@@ -51,10 +51,10 @@ function weatherApp() {
   greeting();
   const city = input();
 
-  if(city === undefined) {
+  if (city === undefined) {
     console.log('Fehler: Eingabe darf nicht leer sein!');
-  } 
-  else { // ansonsten
+  } else {
+    // ansonsten
     const formattedNow = timestamp();
     output(city, formattedNow);
   }
