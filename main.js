@@ -1,60 +1,49 @@
-import { question, keyInSelect } from 'readline-sync';
+import { keyInSelect, question } from 'readline-sync';
 
-let input;
+console.log('Willkommen zur Wetter-App');
 
-while (input !== 'ende') {
+// Hauptmenü
+while (true) {
   const options = ['Ort eingeben'];
-  input = keyInSelect(options, 'Auswahl');
-  if (input === 0) {
-    weatherApp();
-  } else if (input === -1) {
+  let choice = keyInSelect(options, 'Auswahl');
+  if (choice === 0) {
+    weather();
+  } else if (choice === -1) {
     console.log('Auf Wiedersehen! ');
-    input = 'ende';
+    process.exit();
   }
 }
 
-function weatherApp() {
-  // Funktionsdeklarationen
-  function greeting() {
-    console.log('Willkommen zur Wetter-App');
+function input() {
+  const city = question('Für welche Stadt willst du das Wetter wissen? ');
+  if (city.trim().length === 0) {
+    return;
   }
 
-  function input() {
-    // Funktionsrumpf
-    const city = question('Für welche Stadt willst du das Wetter wissen? ');
-    // city ist eine lokale Konstante in der Funktion
+  return city;
+}
 
-    // leere Eingabe verhindern
-    if (city.trim().length === 0) {
-      return;
-    }
+function timestamp() {
+  const now = new Date();
 
-    return city; // Rückgabewert der Funktion
-  }
+  const formattedNow = now.toLocaleTimeString('de-DE', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  });
+  return formattedNow;
+}
 
-  function timestamp() {
-    const now = new Date(); // jetziger Zeitpunkt
+function output(location, time) {
+  console.log(`Temperatur in ${location} um ${time}: 2 Grad`);
+}
 
-    const formattedNow = now.toLocaleTimeString('de-DE', {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    });
-    return formattedNow;
-  }
-
-  function output(location, time) {
-    console.log(`Temperatur in ${location} um ${time}: 2 Grad`);
-  }
-
-  // Funktionsaufrufe
-  greeting();
+function weather() {
   const city = input();
 
   if (city === undefined) {
     console.log('Fehler: Eingabe darf nicht leer sein!');
   } else {
-    // ansonsten
     const formattedNow = timestamp();
     output(city, formattedNow);
   }
