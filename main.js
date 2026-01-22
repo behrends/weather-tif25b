@@ -4,10 +4,12 @@ console.log('Willkommen zur Wetter-App');
 
 // Hauptmenü
 while (true) {
-  const options = ['Ort eingeben'];
+  const options = ['Ort eingeben', 'Ort mit KI suchen'];
   let choice = keyInSelect(options, 'Auswahl');
   if (choice === 0) {
     weather();
+  } else if (choice === 1) {
+    searchLocationWithAI();
   } else if (choice === -1) {
     console.log('Auf Wiedersehen! ');
     process.exit();
@@ -47,4 +49,21 @@ function weather() {
     const formattedNow = getCurrentTimestamp();
     outputWeather(city, formattedNow);
   }
+}
+
+function searchLocationWithAI() {
+  const description = question(
+    'Beschreibe den Ort, den du suchst (z.B. "Hauptstadt von Frankreich"): '
+  );
+  if (description.trim().length === 0) {
+    console.log('Keine Beschreibung eingegeben.');
+    return;
+  }
+
+  console.log('KI sucht nach: ' + description + ' ...');
+  // Simulierte KI-Antwort
+  console.log('KI hat gefunden: Paris');
+
+  const formattedNow = getCurrentTimestamp();
+  outputWeather('Paris', formattedNow);
 }
