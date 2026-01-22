@@ -14,7 +14,7 @@ while (true) {
   }
 }
 
-function input() {
+function getCityInput() {
   const city = question('Für welche Stadt willst du das Wetter wissen? ');
   if (city.trim().length === 0) {
     return;
@@ -23,7 +23,7 @@ function input() {
   return city;
 }
 
-function timestamp() {
+function getCurrentTimestamp() {
   const now = new Date();
 
   const formattedNow = now.toLocaleTimeString('de-DE', {
@@ -34,17 +34,17 @@ function timestamp() {
   return formattedNow;
 }
 
-function output(location, time) {
+function outputWeather(location, time) {
   console.log(`Temperatur in ${location} um ${time}: 2 Grad`);
 }
 
 function weather() {
-  const city = input();
+  const city = getCityInput();
 
   if (city === undefined) {
     console.log('Fehler: Eingabe darf nicht leer sein!');
   } else {
-    const formattedNow = timestamp();
-    output(city, formattedNow);
+    const formattedNow = getCurrentTimestamp();
+    outputWeather(city, formattedNow);
   }
 }
