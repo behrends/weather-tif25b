@@ -1,6 +1,9 @@
+import OpenAI from 'openai';
 import { keyInSelect, question } from 'readline-sync';
 
 console.log('Willkommen zur Wetter-App');
+
+const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 // Hauptmenü
 while (true) {
@@ -9,7 +12,7 @@ while (true) {
   if (choice === 0) {
     weather();
   } else if (choice === 1) {
-    searchLocationWithAI();
+    await searchLocationWithAI();
   } else if (choice === -1) {
     console.log('Auf Wiedersehen! ');
     process.exit();
@@ -51,7 +54,12 @@ function weather() {
   }
 }
 
-function searchLocationWithAI() {
+function cleanLocationOutput(text) {
+  const firstLine = text.split(/\r?\n/).map((line) => line.trim())[0] || '';
+  return firstLine.replace(/^["']|["']$/g, '').replace(/[.,;:!?]+$/, '').trim();
+}
+
+async function searchLocationWithAI() {
   const description = question(
     'Beschreibe den Ort, den du suchst (z.B. "Hauptstadt von Frankreich"): '
   );
@@ -60,10 +68,37 @@ function searchLocationWithAI() {
     return;
   }
 
+  if (!process.env.OPENAI_API_KEY) {
+    console.log(
+      'Fehler: OPENAI_API_KEY fehlt. Bitte setzen mit: export OPENAI_API_KEY="dein_key"'
+    );
+    return;
+  }
+
   console.log('KI sucht nach: ' + description + ' ...');
-  // Simulierte KI-Antwort
-  console.log('KI hat gefunden: Paris');
+  let response;
+  try {
+    response = await client.responses.create({
+      model: 'gpt-4.1-mini',
+      input:
+        'Gib nur den Ortsnamen (Stadt, optional Land) ohne Zusatztext zurück. ' +
+        'Beschreibung: "' +
+        description +
+        '"',
+    });
+  } catch (error) {
+    console.log('Fehler beim Aufruf der OpenAI-API.');
+    return;
+  }
+
+  const location = cleanLocationOutput(response.output_text ?? '');
+  if (!location) {
+    console.log('Kein Ort gefunden.');
+    return;
+  }
+
+  console.log('KI hat gefunden: ' + location);
 
   const formattedNow = getCurrentTimestamp();
-  outputWeather('Paris', formattedNow);
+  outputWeather(location, formattedNow);
 }
