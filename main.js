@@ -1,25 +1,60 @@
+import { question, keyInSelect } from 'readline-sync';
 import OpenAI from 'openai';
-import { keyInSelect, question } from 'readline-sync';
+
+if (!process.env.OPENAI_API_KEY) {
+  console.error('Fehler: Umgebungsvariable OPENAI_API_KEY ist nicht gesetzt.');
+  process.exit(1);
+}
+
+const openai = new OpenAI();
 
 console.log('Willkommen zur Wetter-App');
 
-const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
-// Hauptmenü
-while (true) {
-  const options = ['Ort eingeben', 'Ort mit KI suchen'];
-  let choice = keyInSelect(options, 'Auswahl');
-  if (choice === 0) {
-    weather();
-  } else if (choice === 1) {
-    await searchLocationWithAI();
-  } else if (choice === -1) {
-    console.log('Auf Wiedersehen! ');
-    process.exit();
+async function main() {
+  while (true) {
+    const options = ['Ort eingeben', 'Ort per Beschreibung (KI)'];
+    const choice = keyInSelect(options, 'Auswahl');
+    if (choice === 0) {
+      startWeatherQuery();
+    } else if (choice === 1) {
+      await startLocationByDescription();
+    } else if (choice === -1) {
+      console.log('Auf Wiedersehen! ');
+      process.exit();
+    }
   }
 }
 
-function getCityInput() {
+main();
+async function getLocationByDescription(description) {
+  const response = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    messages: [
+      {
+        role: 'system',
+        content:
+          'Du bist ein Assistent, der Ortsbeschreibungen in konkrete Städtenamen umwandelt. Antworte NUR mit dem Städtenamen, ohne zusätzlichen Text.',
+      },
+      {
+        role: 'user',
+        content: description,
+      },
+    ],
+  });
+  return response.choices[0].message.content.trim();
+}
+
+async function startLocationByDescription() {
+  const description = question('Beschreibe den Ort: ');
+  if (description.trim().length === 0) {
+    console.log('Fehler: Beschreibung darf nicht leer sein!');
+    return;
+  }
+  const location = await getLocationByDescription(description);
+  console.log(`Erkannter Ort: ${location}`);
+}
+
+function inputCity() {
   const city = question('Für welche Stadt willst du das Wetter wissen? ');
   if (city.trim().length === 0) {
     return;
@@ -28,7 +63,7 @@ function getCityInput() {
   return city;
 }
 
-function getCurrentTimestamp() {
+function getCurrentTime() {
   const now = new Date();
 
   const formattedNow = now.toLocaleTimeString('de-DE', {
@@ -39,66 +74,17 @@ function getCurrentTimestamp() {
   return formattedNow;
 }
 
-function outputWeather(location, time) {
+function printWeather(location, time) {
   console.log(`Temperatur in ${location} um ${time}: 2 Grad`);
 }
 
-function weather() {
-  const city = getCityInput();
+function startWeatherQuery() {
+  const city = inputCity();
 
   if (city === undefined) {
     console.log('Fehler: Eingabe darf nicht leer sein!');
   } else {
-    const formattedNow = getCurrentTimestamp();
-    outputWeather(city, formattedNow);
+    const formattedNow = getCurrentTime();
+    printWeather(city, formattedNow);
   }
-}
-
-function cleanLocationOutput(text) {
-  const firstLine = text.split(/\r?\n/).map((line) => line.trim())[0] || '';
-  return firstLine.replace(/^["']|["']$/g, '').replace(/[.,;:!?]+$/, '').trim();
-}
-
-async function searchLocationWithAI() {
-  const description = question(
-    'Beschreibe den Ort, den du suchst (z.B. "Hauptstadt von Frankreich"): '
-  );
-  if (description.trim().length === 0) {
-    console.log('Keine Beschreibung eingegeben.');
-    return;
-  }
-
-  if (!process.env.OPENAI_API_KEY) {
-    console.log(
-      'Fehler: OPENAI_API_KEY fehlt. Bitte setzen mit: export OPENAI_API_KEY="dein_key"'
-    );
-    return;
-  }
-
-  console.log('KI sucht nach: ' + description + ' ...');
-  let response;
-  try {
-    response = await client.responses.create({
-      model: 'gpt-4.1-mini',
-      input:
-        'Gib nur den Ortsnamen (Stadt, optional Land) ohne Zusatztext zurück. ' +
-        'Beschreibung: "' +
-        description +
-        '"',
-    });
-  } catch (error) {
-    console.log('Fehler beim Aufruf der OpenAI-API.');
-    return;
-  }
-
-  const location = cleanLocationOutput(response.output_text ?? '');
-  if (!location) {
-    console.log('Kein Ort gefunden.');
-    return;
-  }
-
-  console.log('KI hat gefunden: ' + location);
-
-  const formattedNow = getCurrentTimestamp();
-  outputWeather(location, formattedNow);
 }
