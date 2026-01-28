@@ -28,7 +28,7 @@ async function main() {
 main();
 async function getLocationByDescription(description) {
   const response = await openai.chat.completions.create({
-    model: 'gpt-4o-mini',
+    model: 'gpt-5-mini',
     messages: [
       {
         role: 'system',
