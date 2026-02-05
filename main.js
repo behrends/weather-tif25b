@@ -1,6 +1,6 @@
 import { keyInSelect } from 'readline-sync';
 import startLocationByDescription from './ai-query.js';
-import startWeatherQuery from './weather-query.js';
+import startWeatherQuery from './location.js';
 
 if (!process.env.OPENAI_API_KEY) {
   console.error('Fehler: Umgebungsvariable OPENAI_API_KEY ist nicht gesetzt.');

@@ -1,5 +1,6 @@
 import { question } from 'readline-sync';
 import OpenAI from 'openai';
+import printWeather from './weather-output.js';
 
 const openai = new OpenAI();
 
@@ -28,5 +29,5 @@ export default async function startLocationByDescription() {
     return;
   }
   const location = await getLocationByDescription(description);
-  console.log(`Erkannter Ort: ${location}`);
+  printWeather(location);
 }
