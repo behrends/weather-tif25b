@@ -16,12 +16,6 @@ async function main() {
     if (choice === 0) {
       startWeatherQuery();
     } else if (choice === 1) {
-      if (!process.env.OPENAI_API_KEY) {
-        console.error(
-          'Fehler: Umgebungsvariable OPENAI_API_KEY ist nicht gesetzt.',
-        );
-        continue;
-      }
       await startLocationByDescription();
     } else if (choice === 2) {
       chooseSavedCity();

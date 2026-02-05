@@ -14,9 +14,15 @@ export default async function startLocationByDescription() {
   try {
     location = await resolveCity(description);
   } catch (error) {
-    console.error(
-      'Fehler bei der Ortsauflösung. Bitte versuche es später erneut.',
-    );
+    if (error instanceof Error && error.message === 'OPENAI_API_KEY fehlt') {
+      console.error(
+        'Fehler: Umgebungsvariable OPENAI_API_KEY ist nicht gesetzt.',
+      );
+    } else {
+      console.error(
+        'Fehler bei der Ortsauflösung. Bitte versuche es später erneut.',
+      );
+    }
     return;
   }
   if (!location) {
