@@ -20,3 +20,12 @@ export function saveCity(name) {
     console.log('Wird gespeichert!');
   }
 }
+
+export function getSavedCities() {
+  const cities = store.get('cities', []);
+  if (!Array.isArray(cities)) {
+    return [];
+  }
+
+  return cities;
+}

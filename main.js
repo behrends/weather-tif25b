@@ -1,6 +1,8 @@
 import { keyInSelect } from 'readline-sync';
 import startLocationByDescription from './ai-query.js';
 import startWeatherQuery from './location.js';
+import printWeather from './weather-output.js';
+import { getSavedCities } from './storage.js';
 
 if (!process.env.OPENAI_API_KEY) {
   console.error('Fehler: Umgebungsvariable OPENAI_API_KEY ist nicht gesetzt.');
@@ -9,22 +11,36 @@ if (!process.env.OPENAI_API_KEY) {
 
 console.log('Willkommen zur Wetter-App');
 
+function chooseSavedCity() {
+  const cities = getSavedCities();
+  if (cities.length === 0) {
+    console.log('Keine gespeicherten Städte vorhanden.');
+    return;
+  }
+
+  const choice = keyInSelect(cities, 'Gespeicherte Stadt wählen');
+  if (choice === -1) {
+    return;
+  }
+
+  const city = cities[choice];
+  printWeather(city);
+}
+
 async function main() {
   while (true) {
     const options = [
       'Ort eingeben',
       'Ort per Beschreibung (KI)',
-      'Wetter anzeigen',
+      'Ort aus Speicher wählen',
     ];
-    const choice = promptMenu(options, 'Auswahl');
+    const choice = keyInSelect(options, 'Auswahl');
     if (choice === 0) {
       startWeatherQuery();
     } else if (choice === 1) {
       await startLocationByDescription();
     } else if (choice === 2) {
-      const city = 'Oslo';
-      // "warte auf das Ergebnis"
-      await getWeather(city);
+      chooseSavedCity();
     } else if (choice === -1) {
       console.log('Auf Wiedersehen! ');
       process.exit();
