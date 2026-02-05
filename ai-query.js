@@ -10,8 +10,9 @@ async function getLocationByDescription(description) {
     messages: [
       {
         role: 'system',
-        content:
-          'Du bist ein Assistent, der Ortsbeschreibungen in konkrete Städtenamen umwandelt. Antworte NUR mit dem Städtenamen, ohne zusätzlichen Text.',
+        content: `Du bist ein Assistent, der Ortsbeschreibungen in konkrete Städtenamen umwandelt. 
+          Antworte NUR mit dem Städtenamen, ohne zusätzlichen Text.
+          Wenn du keinen Ort findest, dann antworte mit "NULL"`,
       },
       {
         role: 'user',
@@ -29,5 +30,9 @@ export default async function startLocationByDescription() {
     return;
   }
   const location = await getLocationByDescription(description);
-  printWeather(location);
+  if (location === 'NULL') {
+    console.log(`Keinen passenden Ort gefunden für "${description}".`);
+  } else {
+    printWeather(location);
+  }
 }
