@@ -1,8 +1,19 @@
 import OpenAI from 'openai';
 
-const openai = new OpenAI();
+let openaiClient;
+
+function getOpenAIClient() {
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error('OPENAI_API_KEY fehlt');
+  }
+  if (!openaiClient) {
+    openaiClient = new OpenAI();
+  }
+  return openaiClient;
+}
 
 export async function resolveCity(description) {
+  const openai = getOpenAIClient();
   const response = await openai.chat.completions.create({
     model: 'gpt-5-mini',
     messages: [
