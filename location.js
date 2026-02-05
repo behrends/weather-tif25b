@@ -1,5 +1,6 @@
 import { question } from 'readline-sync';
 import printWeather from './weather-output.js';
+import { saveCity } from './storage.js';
 
 function inputCity() {
   const city = question('Für welche Stadt willst du das Wetter wissen? ');
@@ -17,5 +18,6 @@ export default function startWeatherQuery() {
     console.log('Fehler: Eingabe darf nicht leer sein!');
   } else {
     printWeather(city);
+    saveCity(city);
   }
 }

@@ -1,6 +1,7 @@
 import { question } from 'readline-sync';
 import OpenAI from 'openai';
 import printWeather from './weather-output.js';
+import { saveCity } from './storage.js';
 
 const openai = new OpenAI();
 
@@ -34,5 +35,6 @@ export default async function startLocationByDescription() {
     console.log(`Keinen passenden Ort gefunden für "${description}".`);
   } else {
     printWeather(location);
+    saveCity(location);
   }
 }
