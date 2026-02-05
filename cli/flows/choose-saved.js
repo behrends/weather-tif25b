@@ -1,6 +1,7 @@
 import { keyInSelect } from 'readline-sync';
-import printWeather from '../helpers/weather-output.js';
-import { getSavedCities } from '../helpers/storage.js';
+import { getWeather } from '../../services/weather.js';
+import printWeather from '../../ui/print-weather.js';
+import { getSavedCities } from '../../storage/cities.js';
 
 export default function chooseSavedCity() {
   const cities = getSavedCities();
@@ -15,5 +16,6 @@ export default function chooseSavedCity() {
   }
 
   const city = cities[choice];
-  printWeather(city);
+  const weather = getWeather(city);
+  printWeather(weather);
 }

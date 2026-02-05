@@ -1,12 +1,7 @@
 import { keyInSelect } from 'readline-sync';
-import startLocationByDescription from './menu/ai-query.js';
-import startWeatherQuery from './menu/location.js';
-import chooseSavedCity from './menu/cities.js';
-
-if (!process.env.OPENAI_API_KEY) {
-  console.error('Fehler: Umgebungsvariable OPENAI_API_KEY ist nicht gesetzt.');
-  process.exit(1);
-}
+import startLocationByDescription from './cli/flows/ai-location.js';
+import startWeatherQuery from './cli/flows/manual-location.js';
+import chooseSavedCity from './cli/flows/choose-saved.js';
 
 console.log('Willkommen zur Wetter-App');
 
@@ -21,6 +16,12 @@ async function main() {
     if (choice === 0) {
       startWeatherQuery();
     } else if (choice === 1) {
+      if (!process.env.OPENAI_API_KEY) {
+        console.error(
+          'Fehler: Umgebungsvariable OPENAI_API_KEY ist nicht gesetzt.',
+        );
+        continue;
+      }
       await startLocationByDescription();
     } else if (choice === 2) {
       chooseSavedCity();
