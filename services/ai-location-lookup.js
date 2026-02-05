@@ -19,7 +19,7 @@ export async function resolveCity(description) {
     ],
   });
 
-  const content = response.choices[0].message.content.trim();
+  const content = (response.choices?.[0]?.message?.content ?? '').trim();
   if (content === 'NULL' || content.length === 0) {
     return null;
   }

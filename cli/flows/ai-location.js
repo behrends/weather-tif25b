@@ -10,7 +10,15 @@ export default async function startLocationByDescription() {
     console.log('Fehler: Beschreibung darf nicht leer sein!');
     return;
   }
-  const location = await resolveCity(description);
+  let location;
+  try {
+    location = await resolveCity(description);
+  } catch (error) {
+    console.error(
+      'Fehler bei der Ortsauflösung. Bitte versuche es später erneut.',
+    );
+    return;
+  }
   if (!location) {
     console.log(`Keinen passenden Ort gefunden für "${description}".`);
   } else {
