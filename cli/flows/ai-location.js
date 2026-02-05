@@ -1,5 +1,5 @@
 import { keyInYNStrict, question } from 'readline-sync';
-import { resolveCity } from '../../services/ai-location.js';
+import { resolveCity } from '../../services/ai-location-lookup.js';
 import { getWeather } from '../../services/weather.js';
 import printWeather from '../../ui/print-weather.js';
 import { saveCity } from '../../storage/cities.js';
