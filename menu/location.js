@@ -1,6 +1,6 @@
 import { question } from 'readline-sync';
-import printWeather from './weather-output.js';
-import { saveCity } from './storage.js';
+import printWeather from '../helpers/weather-output.js';
+import { saveCity } from '../helpers/storage.js';
 
 function inputCity() {
   const city = question('Für welche Stadt willst du das Wetter wissen? ');

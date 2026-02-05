@@ -1,7 +1,7 @@
 import { question } from 'readline-sync';
 import OpenAI from 'openai';
-import printWeather from './weather-output.js';
-import { saveCity } from './storage.js';
+import printWeather from '../helpers/weather-output.js';
+import { saveCity } from '../helpers/storage.js';
 
 const openai = new OpenAI();
 
