@@ -1,4 +1,4 @@
-import { question, keyInSelect } from 'readline-sync';
+import { question, keyInSelect, keyInYNStrict } from 'readline-sync';
 
 export function promptMenu(options, prompt) {
   return keyInSelect(options, prompt);
@@ -20,4 +20,8 @@ export function promptDescription() {
   }
 
   return description;
+}
+
+export function promptSaveCity(city) {
+  return keyInYNStrict(`Willst du "${city}" speichern?`);
 }
