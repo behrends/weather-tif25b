@@ -18,8 +18,20 @@ export default async function startWeatherQuery() {
   if (city === undefined) {
     console.log('Fehler: Eingabe darf nicht leer sein!');
   } else {
-    const weather = await getWeather(city);
-    printWeather(weather);
-    promptAndSaveCity(city);
+    try {
+      const weather = await getWeather(city);
+      printWeather(weather);
+      promptAndSaveCity(city);
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('nicht gefunden')) {
+        console.log(
+          `Für "${city}" wurde kein Ort gefunden. Bitte prüfe die Schreibweise oder gib einen anderen Ortsnamen ein.`,
+        );
+      } else {
+        console.log(
+          'Wetterdaten konnten gerade nicht geladen werden. Bitte versuche es später erneut.',
+        );
+      }
+    }
   }
 }
