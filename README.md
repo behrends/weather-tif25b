@@ -26,6 +26,27 @@ npm install
 
 ## Konfiguration
 
+Für die Nutzung der Beispieldaten muss die Datei
+`data-example.json` nach `data.json` kopiert werden:
+
+Windows PowerShell:
+
+```powershell
+Copy-Item data-example.json data.json
+```
+
+Windows cmd.exe:
+
+```cmd
+copy data-example.json data.json
+```
+
+macOS / Linux:
+
+```bash
+cp data-example.json data.json
+```
+
 Die App erwartet die Umgebungsvariable `OPENAI_API_KEY`.
 
 macOS / Linux (zsh, bash):
