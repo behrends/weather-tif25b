@@ -1,8 +1,8 @@
-import { keyInYNStrict, question } from 'readline-sync';
+import { question } from 'readline-sync';
 import { resolveCity } from '../../services/ai-location-lookup.js';
 import { getWeather } from '../../services/weather.js';
 import printWeather from '../../ui/print-weather.js';
-import { saveCity } from '../../storage/cities.js';
+import promptAndSaveCity from './prompt-save-city.js';
 
 export default async function startLocationByDescription() {
   const description = question('Beschreibe den Ort: ');
@@ -28,16 +28,8 @@ export default async function startLocationByDescription() {
   if (!location) {
     console.log(`Keinen passenden Ort gefunden für "${description}".`);
   } else {
-    const weather = getWeather(location);
+    const weather = await getWeather(location);
     printWeather(weather);
-    const shouldSave = keyInYNStrict(`Soll "${location}" gespeichert werden?`);
-    if (shouldSave) {
-      const result = saveCity(location);
-      if (result.alreadyExists) {
-        console.log('Ist bereits gespeichert.');
-      } else if (result.saved) {
-        console.log('Wird gespeichert!');
-      }
-    }
+    promptAndSaveCity(location);
   }
 }

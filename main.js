@@ -14,34 +14,15 @@ async function main() {
     ];
     const choice = keyInSelect(options, 'Auswahl');
     if (choice === 0) {
-      startWeatherQuery();
+      await startWeatherQuery();
     } else if (choice === 1) {
       await startLocationByDescription();
     } else if (choice === 2) {
-      chooseSavedCity();
+      await chooseSavedCity();
     } else if (choice === -1) {
       console.log('Auf Wiedersehen! ');
       process.exit();
     }
-  }
-}
-
-async function getWeather(city) {
-  // Stadt in Geocoding-Service suchen (für Koordinaten)
-  try {
-    const result = await fetch(
-      `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=de&format=json`,
-    );
-    // Auf JSON-Daten zugreifen
-    const data = await result.json();
-    const resultObject = data.results[0];
-    console.log(
-      'Koordinaten für ' + city,
-      resultObject.latitude,
-      resultObject.longitude,
-    );
-  } catch (e) {
-    console.error(e.message);
   }
 }
 

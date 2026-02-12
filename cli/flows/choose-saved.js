@@ -3,7 +3,7 @@ import { getWeather } from '../../services/weather.js';
 import printWeather from '../../ui/print-weather.js';
 import { getSavedCities } from '../../storage/cities.js';
 
-export default function chooseSavedCity() {
+export default async function chooseSavedCity() {
   const cities = getSavedCities();
   if (cities.length === 0) {
     console.log('Keine gespeicherten Städte vorhanden.');
@@ -16,6 +16,6 @@ export default function chooseSavedCity() {
   }
 
   const city = cities[choice];
-  const weather = getWeather(city);
+  const weather = await getWeather(city);
   printWeather(weather);
 }
