@@ -4,12 +4,15 @@ Einfache CLI-Wetter-App in Node.js mit zwei Modi:
 
 - Stadt direkt eingeben
 - Stadt per Freitext-Beschreibung über OpenAI erkennen
+- Stadt aus lokal gespeichertem Verlauf auswählen
 
 ## Features
 
 - Interaktives Terminal-Menü
 - Orts-Erkennung aus Beschreibung (OpenAI)
 - Speicherung bereits genutzter Städte mit `conf`
+- Auswahl bereits gespeicherter Städte
+- Aktuelle Temperatur über Open-Meteo API
 - Zeitformatierung in `de-DE`
 
 ## Voraussetzungen
@@ -25,27 +28,6 @@ npm install
 ```
 
 ## Konfiguration
-
-Für die Nutzung der Beispieldaten muss die Datei
-`data-example.json` nach `data.json` kopiert werden:
-
-Windows PowerShell:
-
-```powershell
-Copy-Item data-example.json data.json
-```
-
-Windows cmd.exe:
-
-```cmd
-copy data-example.json data.json
-```
-
-macOS / Linux:
-
-```bash
-cp data-example.json data.json
-```
 
 Die App erwartet die Umgebungsvariable `OPENAI_API_KEY`.
 
@@ -71,6 +53,7 @@ Beim Start erscheint ein Menü mit:
 
 - `Ort eingeben`
 - `Ort per Beschreibung (KI)`
+- `Ort aus Speicher wählen`
 
 Mit `q` (oder Abbruch im Menü) wird die App beendet.
 
@@ -81,15 +64,17 @@ In diesem Projekt liegt die Datei standardmäßig unter `data.json`.
 
 ## Projektstruktur
 
-- `main.js`: Einstiegspunkt, Menü-Loop, API-Key-Check
-- `app.js`: Ablauf für Wetterabfrage und KI-Ortserkennung
-- `cli.js`: Terminal-Eingaben
-- `openaiService.js`: OpenAI-Request zur Orts-Erkennung
-- `weatherService.js`: Ausgabe der Wetterdaten
-- `storage.js`: Persistenz gespeicherter Städte
-- `timeUtils.js`: Uhrzeit-Formatierung
+- `main.js`: Einstiegspunkt und Menü-Loop
+- `cli/flows/manual-location.js`: Stadt manuell eingeben und Wetter abrufen
+- `cli/flows/ai-location.js`: Ort per Beschreibung auflösen und Wetter abrufen
+- `cli/flows/choose-saved.js`: Gespeicherte Stadt wählen
+- `cli/flows/prompt-save-city.js`: Stadt optional speichern
+- `services/ai-location-lookup.js`: OpenAI-Request zur Orts-Erkennung
+- `services/weather.js`: Geocoding + aktuelle Temperatur über Open-Meteo
+- `storage/cities.js`: Persistenz gespeicherter Städte
+- `ui/print-weather.js`: Formatierte Ausgabe inkl. Uhrzeit
 
 ## Hinweise
 
-- Die Wetterausgabe ist aktuell statisch (`2 Grad`) und dient als Platzhalter.
-- Das KI-Modell ist in `openaiService.js` auf `gpt-5-mini` gesetzt.
+- Die Umgebungsvariable `OPENAI_API_KEY` wird nur für den KI-Modus benötigt.
+- Das KI-Modell ist in `services/ai-location-lookup.js` auf `gpt-5-mini` gesetzt.
