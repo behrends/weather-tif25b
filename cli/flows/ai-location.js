@@ -1,7 +1,8 @@
 import { question } from 'readline-sync';
 import { resolveCity } from '../../services/ai-location-lookup.js';
-import { getWeather, WeatherServiceError } from '../../services/weather.js';
+import { getWeather } from '../../services/weather.js';
 import printWeather from '../../ui/print-weather.js';
+import getWeatherErrorMessage from '../../ui/weather-error-message.js';
 import promptAndSaveCity from './prompt-save-city.js';
 
 export default async function startLocationByDescription() {
@@ -33,29 +34,12 @@ export default async function startLocationByDescription() {
       printWeather(weather);
       promptAndSaveCity(location);
     } catch (error) {
-      if (error instanceof WeatherServiceError && error.code === 'NOT_FOUND') {
-        console.log(
-          `Für "${location}" wurde kein Ort gefunden. Bitte versuche eine präzisere Beschreibung.`,
-        );
-      } else if (
-        error instanceof WeatherServiceError &&
-        error.code === 'NETWORK'
-      ) {
-        console.log(
-          'Keine Internetverbindung erkannt. Bitte prüfe deine Verbindung und versuche es erneut.',
-        );
-      } else if (
-        error instanceof WeatherServiceError &&
-        error.code === 'SERVICE_UNAVAILABLE'
-      ) {
-        console.log(
-          'Der Wetterdienst ist gerade nicht erreichbar. Bitte versuche es später erneut.',
-        );
-      } else {
-        console.log(
-          'Wetterdaten konnten gerade nicht geladen werden. Bitte versuche es später erneut.',
-        );
-      }
+      console.log(
+        getWeatherErrorMessage(error, {
+          location,
+          notFoundMessage: `Für "${location}" wurde kein Ort gefunden. Bitte versuche eine präzisere Beschreibung.`,
+        }),
+      );
     }
   }
 }

@@ -1,6 +1,7 @@
 import { question } from 'readline-sync';
-import { getWeather, WeatherServiceError } from '../../services/weather.js';
+import { getWeather } from '../../services/weather.js';
 import printWeather from '../../ui/print-weather.js';
+import getWeatherErrorMessage from '../../ui/weather-error-message.js';
 import promptAndSaveCity from './prompt-save-city.js';
 
 function inputCity() {
@@ -23,29 +24,7 @@ export default async function startWeatherQuery() {
       printWeather(weather);
       promptAndSaveCity(city);
     } catch (error) {
-      if (error instanceof WeatherServiceError && error.code === 'NOT_FOUND') {
-        console.log(
-          `Für "${city}" wurde kein Ort gefunden. Bitte prüfe die Schreibweise oder gib einen anderen Ortsnamen ein.`,
-        );
-      } else if (
-        error instanceof WeatherServiceError &&
-        error.code === 'NETWORK'
-      ) {
-        console.log(
-          'Keine Internetverbindung erkannt. Bitte prüfe deine Verbindung und versuche es erneut.',
-        );
-      } else if (
-        error instanceof WeatherServiceError &&
-        error.code === 'SERVICE_UNAVAILABLE'
-      ) {
-        console.log(
-          'Der Wetterdienst ist gerade nicht erreichbar. Bitte versuche es später erneut.',
-        );
-      } else {
-        console.log(
-          'Wetterdaten konnten gerade nicht geladen werden. Bitte versuche es später erneut.',
-        );
-      }
+      console.log(getWeatherErrorMessage(error, { location: city }));
     }
   }
 }
