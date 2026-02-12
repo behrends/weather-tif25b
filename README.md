@@ -17,9 +17,9 @@ Einfache CLI-Wetter-App in Node.js mit zwei Modi:
 
 ## Voraussetzungen
 
-- Node.js 18+
+- Node.js 20.6+
 - npm
-- OpenAI API Key
+- OpenAI API Key (nur für KI-Modus)
 
 ## Installation
 
@@ -31,23 +31,21 @@ npm install
 
 Die App erwartet die Umgebungsvariable `OPENAI_API_KEY`.
 
-macOS / Linux (zsh, bash):
+Lege dafür eine `.env` im Projektroot an:
 
-```bash
-export OPENAI_API_KEY="dein_api_key"
+```env
+OPENAI_API_KEY=dein_api_key
 ```
 
-Windows PowerShell:
-
-```powershell
-$env:OPENAI_API_KEY="dein_api_key"
-```
+Die Variable wird beim Start über die native Node.js-Funktion `--env-file` geladen.
 
 ## Start
 
 ```bash
-node main.js
+npm start
 ```
+
+Hinweis: Der manuelle Modus (`Ort eingeben` und `Ort aus Speicher wählen`) funktioniert auch ohne gesetzten `OPENAI_API_KEY`.
 
 Beim Start erscheint ein Menü mit:
 
