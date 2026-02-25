@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "nodenext", // Import-System: Node.js mit ES-Modules
+    "target": "esnext", // Welche JS-Features als bekannt gelten (neuester Stand)
+    "strict": true, // Strenge Typprüfung – fängt mehr Fehler ab
+    "skipLibCheck": true, // Typen aus node_modules nicht prüfen (schneller)
+    "esModuleInterop": true, // Ältere npm-Pakete (CJS) normal importierbar machen
+    "allowJs": true, // Auch .js-Dateien im Projekt erlauben (nicht nur .ts)
+    "allowImportingTsExtensions": true, // Imports mit .ts-Endung erlauben
+    "noEmit": true // Keine Dateien erzeugen – nur Fehler anzeigen
+  },
+  "include": ["src"] // Nur Dateien im src/-Ordner prüfen
+}
