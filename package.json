@@ -15,5 +15,10 @@
     "conf": "^15.1.0",
     "openai": "^6.16.0",
     "readline-sync": "^1.4.10"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   }
 }
