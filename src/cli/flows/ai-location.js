@@ -1,5 +1,8 @@
 import { question } from 'readline-sync';
-import { resolveCity } from '../../services/ai-location-lookup.js';
+import {
+  LocationResolutionError,
+  resolveCity,
+} from '../../services/ai-location-lookup.js';
 import { getWeather } from '../../services/weather.js';
 import printWeather from '../../ui/print-weather.js';
 import getWeatherErrorMessage from '../../ui/weather-error-message.js';
@@ -18,6 +21,20 @@ export default async function startLocationByDescription() {
     if (error instanceof Error && error.message === 'OPENAI_API_KEY fehlt') {
       console.error(
         'Fehler: Umgebungsvariable OPENAI_API_KEY ist nicht gesetzt.',
+      );
+    } else if (
+      error instanceof LocationResolutionError &&
+      error.code === 'PERMISSION'
+    ) {
+      console.error(
+        'Fehler: OpenAI-Berechtigung fehlt (Scope "model.request"). Prüfe API-Key, Projektrolle und Key-Scopes.',
+      );
+    } else if (
+      error instanceof LocationResolutionError &&
+      error.code === 'RATE_LIMIT'
+    ) {
+      console.error(
+        'Fehler: OpenAI-Limit erreicht. Bitte warte kurz oder prüfe dein Abrechnungslimit.',
       );
     } else {
       console.error(
