@@ -4,7 +4,7 @@ import {
   resolveCity,
 } from '../../services/ai-location-lookup.js';
 import { getWeather } from '../../services/weather.js';
-import printWeather from '../../ui/print-weather.js';
+import printWeather from '../../ui/print-weather.ts';
 import getWeatherErrorMessage from '../../ui/weather-error-message.js';
 import promptAndSaveCity from './prompt-save-city.js';
 
