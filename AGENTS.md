@@ -109,13 +109,13 @@ npm run typecheck      # Typecheck only (tsc, no emit)
 - Run `npm run format` or `npm run format:check` before final review.
 - Run `npm run typecheck` for changes in `.ts` or TS-adjacent logic.
 
+## Commit Message Rules
+
+- Commit messages must be written in German.
+- Commit messages must be shorter than 80 characters.
+
 ## Repo-Specific Notes
 
 - `conf` stores data in `data.json` in the project root for this repo.
 - The CLI uses `readline-sync` for prompts; keep prompts simple and
   synchronous.
-
-## Cursor / Copilot Rules
-
-- No .cursor/rules/ or .cursorrules found.
-- No .github/copilot-instructions.md found.
