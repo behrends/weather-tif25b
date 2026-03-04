@@ -1,5 +1,5 @@
 import { keyInYNStrict } from 'readline-sync';
-import { saveCity } from '../../storage/cities.js';
+import { saveCity } from '../../storage/cities.ts';
 
 export default function promptAndSaveCity(city) {
   const shouldSave = keyInYNStrict(`Soll "${city}" gespeichert werden?`);
