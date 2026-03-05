@@ -108,6 +108,7 @@ npm run typecheck      # Typecheck only (tsc, no emit)
 - Run `npm run lint` after changes touching JS/TS files.
 - Run `npm run format` or `npm run format:check` before final review.
 - Run `npm run typecheck` for changes in `.ts` or TS-adjacent logic.
+- Run `npm run test` after changes touching JS/TS files.
 
 ## Commit Message Rules
 
