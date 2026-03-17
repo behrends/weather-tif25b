@@ -60,6 +60,12 @@ Mit `q` (oder Abbruch im Menü) wird die App beendet.
 Gespeicherte Städte werden lokal in der Konfiguration abgelegt.
 In diesem Projekt liegt die Datei standardmäßig unter `data.json`.
 
+Um mit Beispielstädten zu starten, kann die Vorlage kopiert werden:
+
+```bash
+cp data-example.json data.json
+```
+
 ## Projektstruktur
 
 - `main.js`: Einstiegspunkt und Menü-Loop
