@@ -81,4 +81,4 @@ cp data-example.json data.json
 ## Hinweise
 
 - Die Umgebungsvariable `OPENAI_API_KEY` wird nur für den KI-Modus benötigt.
-- Das KI-Modell ist in `services/ai-location-lookup.js` auf `gpt-5-mini` gesetzt.
+- Das KI-Modell ist in `services/ai-location-lookup.js` auf `gpt-5.4-mini` gesetzt.
