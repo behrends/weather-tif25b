@@ -25,7 +25,7 @@ export async function resolveCity(description) {
   let response;
   try {
     response = await openai.chat.completions.create({
-      model: 'gpt-5-mini',
+      model: 'gpt-5.4-mini',
       messages: [
         {
           role: 'system',
