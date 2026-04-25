@@ -1,7 +1,7 @@
 import OpenAI from 'openai';
 
 let openaiClient;
-const LOCATION_RESOLUTION_MODEL = 'gpt-5.4-mini';
+const LOCATION_RESOLUTION_MODEL = 'gpt-5.4-nano';
 const LOCATION_RESOLUTION_INSTRUCTIONS = [
   'Du bist ein Assistent, der Ortsbeschreibungen in konkrete Städtenamen umwandelt.',
   'Antworte NUR mit dem Städtenamen, ohne zusätzlichen Text.',
